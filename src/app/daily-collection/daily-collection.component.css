@@ -1,0 +1,44 @@
+td {
+    border: 1px solid black !important;
+}
+
+th {
+    border: 1px solid black !important;
+}
+
+#dailyCollection {
+    margin-left: 20px !important;
+}
+mat-table{
+    max-width: 80%;
+    border: 1px solid ;
+}
+.mat-column-slNo{
+    max-width: 6%;
+    border-right: 1px solid;
+}
+.mat-column-custName {
+    max-width: 30%; 
+    border-right: 1px solid;
+    padding: 2px !important;
+}
+.mat-column-todayOrderTValue {
+    max-width: 10%; 
+    border-right: 1px solid;
+}
+.mat-column-balance {
+    max-width: 10%;
+    border-right: 1px solid;
+}
+.mat-column-totalReceivedAmount {
+    max-width: 100px;
+    border-right: 1px solid;
+}
+.mat-column-saveBtn {
+    max-width: 10%;
+    border-right: 1px solid;
+}
+.recAmount{
+    width: 4rem !important;
+}
+  

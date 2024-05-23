@@ -1,0 +1,23 @@
+td {
+    border: 1px solid black !important;
+}
+
+th {
+    border: 1px solid black !important;
+}
+
+#productPage{
+    margin: 20px !important;
+}
+
+.input-group {
+    margin-top: 10px;
+}
+
+#submitbtn {
+    color: #3a22ed;
+}
+
+#cancelbtn {
+    color: #ed2222;
+}

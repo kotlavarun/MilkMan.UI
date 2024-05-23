@@ -1,0 +1,153 @@
+<ul class="nav">
+    <li class="nav-item" *ngFor="let tabName of navbar1">
+      <a class="nav-link active" (click)="tabClickEvent(tabName, 'navBar1')">{{tabName}}</a>
+    </li>    
+</ul>
+<div *ngIf="navBar1Tab == 'Single Order'">
+    <div class="container border" id="singleOrderPageContainer">
+        <div class="row">
+            <div class="col">
+                <div class="container mt-3">
+                    <div class="input-group flex-nowrap col">
+                        <span class="input-group-text" id="addon-wrapping">Search For Customers</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" 
+                        aria-describedby="inputGroup-sizing-sm" [(ngModel)] = "customerSearchValue" (ngModelChange)="onSearch()">
+                    </div>
+                    <ul class="list-group mt-3" id="searchList"> 
+                        <li class="list-group-item"  *ngFor="let customer of customerSearchList" >
+                          <a (click)="onCustomerClick(customer.custId,customer.custName,customer.custPhone)"><span>{{ customer.custName }}</span> - <span>{{ customer.custShopName }}</span> - <span>{{ customer.phone }}</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="container">
+                    
+                </div>
+            </div>
+            <div class="col border" id="singleOrderBilling">
+                <form [formGroup]="singleCustOrderForm" (ngSubmit)="onSubmitSOrder()">
+                    <div class="row">
+                        <div class="input-group flex-nowrap col">
+                            <span class="input-group-text" id="addon-wrapping">Cust Name</span>
+                            <input type="text" formControlName="custName" class="form-control" placeholder="Customer Name" aria-label="Custonername" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="input-group flex-nowrap col">
+                            <span class="input-group-text" id="addon-wrapping">Date</span>
+                            <input type="datetime"  formControlName="orderDate" class="form-control" aria-label="Custonername" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group flex-nowrap col">
+                            <span class="input-group-text" id="addon-wrapping">Phone</span>
+                            <input type="text" class="form-control" placeholder="Phone" aria-label="Phone" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <table class="table table-bordered border">
+                        <tr>
+                            <th></th>
+                            <th>S#</th>
+                            <th>Product Name</th>
+                            <th>MRP</th>
+                            <th>discount price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr *ngFor="let item of productListForms.controls; let i = index">
+                            <td><i class="bi bi-dash-circle" (click)="deleteProduct(i)"></i></td>
+                            <td>{{i + 1}}</td>
+                            <td>
+                                <select (change)="addProductDetailsToOrderList($event, i)" >
+                                    <option>Select product</option>
+                                    <option *ngFor="let product of productList" [value]="product?.productId">{{product?.productName}}</option>
+                                </select>
+                            </td>
+                            <td>{{item?.value.productMRP}}</td>
+                            <td>{{item?.value.productUnitValue}}</td>                               
+                            <td><input type="text" (keyup)="calculateProductPrice(i, $event, item?.value.productUnitValue)" /></td>
+                            <td>{{item?.value.orderValue}}</td>
+                        </tr>
+                        <tr>
+                            <td (click)="addNewProductLine()"><i class="bi bi-plus-circle"></i></td>
+                            <td colspan="6"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td colspan="3">Total :</td>
+                            <td></td>
+                            <td>{{orderTValue?.value}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td colspan="5">Remark</td>
+                        </tr>
+                    </table>
+                    <button type="button" type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
+        </div>
+      </div>
+    <!-- <div class="container" id="singleOrderPageContainer">
+        <div id="sOrderGrid1">
+            N
+        </div>
+        <div id="sOrderGrid2">
+            k
+        </div>
+    </div> -->
+</div>
+<div *ngIf="navBar1Tab == 'Regular Orders'">
+    <ul class="nav">
+        <li class="nav-item" *ngFor="let innerTab of navBarForMOrder">
+            <a class="nav-link active" (click)="tabClickEvent(innerTab, 'navBar2');">{{innerTab}}</a>
+        </li>
+    </ul>
+    <div class="input-group flex-nowrap col">
+        <span class="input-group-text" id="addon-wrapping">Date</span>
+        <input type="date" [(ngModel)]="rOrderDate" (ngModelChange)="getCustDForROrder(); getRegularOrderTHeader();" class="form-control" aria-label="Custonername" aria-describedby="addon-wrapping">
+    </div>
+    <button mat-raised-button (click)="saveAllROrders()">Primary</button>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- Customer Name Column -->
+        <ng-container matColumnDef="custName" >
+          <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.custName}} </mat-cell>
+        </ng-container>
+      
+        <!-- Dynamic Product Columns -->
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef> {{ column }} </mat-header-cell>
+            <mat-cell *matCellDef="let element"><input type="text" [value]="getProductQuantity(element, column)" 
+                (input)="calculateProductValue(element, column, $event )"/>
+            </mat-cell>
+        </ng-container>
+        
+        <!-- Totale Column -->
+        <ng-container matColumnDef="orderTotal">
+            <mat-header-cell *matHeaderCellDef> orderTotal </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.orderTValue}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="custOldBal">
+            <mat-header-cell *matHeaderCellDef> Old Balance </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.custOldBal}} </mat-cell>
+        </ng-container>
+
+        <!-- save button Column -->
+        <ng-container matColumnDef="saveButton" >
+            <mat-header-cell *matHeaderCellDef>button</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <button mat-raised-button (click)="saveSingleCustROrder(element)">save</button>
+            </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="Total">
+            <mat-header-cell *matHeaderCellDef> Total order </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ getProductQuantity(element, column) }} </mat-cell>
+        </ng-container> -->
+      
+        <mat-header-row *matHeaderRowDef="['custName'].concat(displayedColumns).concat(['orderTotal','custOldBal','saveButton'])"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['custName'].concat(displayedColumns).concat(['orderTotal','custOldBal','saveButton']);"></mat-row>
+    </mat-table>
+      
+</div>

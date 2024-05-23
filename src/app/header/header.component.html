@@ -1,0 +1,8 @@
+<div id="titleHeader">
+    <h2>Application</h2>
+</div>
+<ul class="nav">
+  <li class="nav-item" *ngFor="let tab of mainMenuTabsList">
+    <a class="nav-link" [ngClass]="{'selected': tab === selectedTab}" (click)="tabChangeHandler(tab)" >{{tab}}</a>
+  </li>
+</ul>

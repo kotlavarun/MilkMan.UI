@@ -1,0 +1,4 @@
+<app-header (currentTabSelected)="tabChangeHandler($event)"></app-header>
+<app-orderpage *ngIf="currentTabSelected == 'Orders'"></app-orderpage>
+<app-products *ngIf="currentTabSelected == 'Products'"></app-products>
+<app-daily-collection *ngIf="currentTabSelected == 'Daily Collection'"></app-daily-collection>

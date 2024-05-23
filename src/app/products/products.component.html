@@ -1,0 +1,62 @@
+<div id="productPage" class="row">
+    <div class="col">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!-- <ng-container matColumnDef="productId">
+              <th mat-header-cell *matHeaderCellDef> Product ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.productId}} </td>
+            </ng-container> -->
+        
+            <ng-container matColumnDef="slNo">
+                <th mat-header-cell *matHeaderCellDef> Sl. No </th>
+                <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+            </ng-container>
+          
+            <ng-container matColumnDef="productName">
+              <th mat-header-cell *matHeaderCellDef> Product Name </th>
+              <td style="width: 200px !important;" mat-cell *matCellDef="let element"> {{element.productName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="productMRP">
+              <th mat-header-cell *matHeaderCellDef> Product MRP </th>
+              <td style="text-align: center;" mat-cell *matCellDef="let element"> {{element.productMRP}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </div>
+    <div class="col">
+        <h2>Add New Product</h2>
+        <form [formGroup]="newProductForm" (ngSubmit)="addNewProduct()">
+            <div class="input-group">
+                <span class="input-group-text">Product Name</span>
+                <input type="text" formControlName="productName" class="form-control" />
+            </div>
+            <div class="input-group">
+                <label class="input-group-text">Product Code</label>
+                <input type="text" formControlName="productCode" class="form-control" />
+            </div>
+            <div class="input-group">
+                <label class="input-group-text">Product Desc</label>
+                <input type="text" formControlName="productDesc" class="form-control" />
+            </div>
+            <div class="input-group">
+                <label class="input-group-text">Product MRP</label>
+                <input type="text" formControlName="productMRP" class="form-control" />
+            </div>
+            <div class="input-group">
+                <label class="input-group-text">Box Quantity</label>
+                <input type="text" formControlName="boxQuantity" class="form-control" />
+            </div>
+            <div class="input-group">
+                <label class="input-group-text">Box Price</label>
+                <input type="text" formControlName="boxPrice" class="form-control" />
+            </div>
+            <div class="input-group">
+                <button id="submitbtn" mat-raised-button type="submit" [disabled]="!newProductForm.valid" >Add</button>
+                <button id="cancelbtn" mat-raised-button type="button">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div id="dailyCollection">
+  <ul class="nav">
+    <li class="nav-item" *ngFor="let tabName of navBar">
+      <a class="nav-link active" [ngClass]="{'selected': tabName === selectedTab}" (click)="onTabClicked(tabName)" >{{tabName}}</a>
+    </li>    
+  </ul>
+  <div>
+    <button (click)="moveDateOneDayDown()">
+      <
+    </button>
+    <input type="date" [(ngModel)]="requestedDate" (ngModelChange)="getDailyCollectionList()" />
+    <button (click)="moveDateOneDayUp()">
+      >
+    </button>
+  </div>
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="slNo">
+      <mat-header-cell *matHeaderCellDef> Sl. No </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</mat-cell>
+    </ng-container>
+    <!-- Customer Name Column -->
+    <ng-container matColumnDef="custName">
+      <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.custName}} </mat-cell>
+    </ng-container>
+    <!-- Order Total Value Column -->
+    <ng-container matColumnDef="todayOrderTValue">
+      <mat-header-cell *matHeaderCellDef> Order Total Value </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.todayOrderTValue || 0}} </mat-cell>
+    </ng-container>
+    <!-- Balance Column -->
+    <ng-container matColumnDef="balance">
+      <mat-header-cell *matHeaderCellDef> Balance </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.balance || 0}} </mat-cell>
+    </ng-container>
+    <!-- Received Amount Column -->
+    <ng-container matColumnDef="totalReceivedAmount">
+      <mat-header-cell *matHeaderCellDef> Total Received Amount </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.totalReceivedAmount || 0 }}
+        <!-- <input type="number" *ngIf="element.totalReceivedAmount == 0" [value]="element.totalReceivedAmount" (input)="updateReceivedAmount(element, $event)" /> -->
+      </mat-cell>
+    </ng-container>
+
+    <!-- Remark Column -->
+    <ng-container matColumnDef="remark">
+      <mat-header-cell *matHeaderCellDef> Remark </mat-header-cell>
+      <mat-cell *matCellDef="let element"><input type="text" [value]="element.remark || ''" (input)="updateRemark(element, $event)" /> </mat-cell>
+    </ng-container>
+
+    <!--Save Button-->
+    <ng-container matColumnDef="saveBtn" class="saveBtn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <input class="recAmount" type="number" (input)="updateReceivedAmount(element, $event)" /><i class="bi bi-plus-circle-dotted" (click)="saveSingleCashTransaction(element)"></i>
+      </mat-cell>
+    </ng-container>
+    <!-- Save Button
+    <ng-container matColumnDef="moreCash">
+      <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div class="row" *ngIf="element.totalReceivedAmount != 0">
+          <input class="col" type="number"  />
+          <button class="col" >Add</button>
+        </div>
+      </mat-cell>
+    </ng-container> -->
+
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+
+  </mat-table>
+</div>
